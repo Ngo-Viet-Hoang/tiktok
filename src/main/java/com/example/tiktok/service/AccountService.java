@@ -37,6 +37,7 @@ public class AccountService implements UserDetailsService {
         Account account = Account.builder()
                 .username((accountRegisterDto.getUsername()))
                 .passwordHash(passwordEncoder.encode(accountRegisterDto.getPassword()))
+                .email(accountRegisterDto.getEmail())
                 .role(1)
                 .build();
         return accountRepository.save(account);
