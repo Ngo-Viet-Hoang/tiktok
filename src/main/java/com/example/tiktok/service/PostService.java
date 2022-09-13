@@ -47,6 +47,7 @@ public class PostService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Post is not found");
         }
         Post exitPost = optionalPost.get();
+        exitPost.setId(post.getId());
         exitPost.setImage(post.getImage());
         exitPost.setTitle(post.getTitle());
         exitPost.setContent(post.getContent());
