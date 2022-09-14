@@ -22,7 +22,7 @@ import java.util.Collection;
 
 @Slf4j
 public class MyAuthorizationFilter extends OncePerRequestFilter {
-    private static final String[] IGNORE_PATHS = {"/api/v1/accounts/login", "/api/v1/accounts/register"};
+    private static final String[] IGNORE_PATHS = {"/api/v1/login", "/api/v1/register"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
