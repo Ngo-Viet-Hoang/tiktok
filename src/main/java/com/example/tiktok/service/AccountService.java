@@ -26,21 +26,22 @@ public class AccountService implements UserDetailsService {
     final AccountRepository accountRepository;
     final PasswordEncoder passwordEncoder;
 
-    public Account register(AccountRegisterDto accountRegisterDto) throws Exception {
-        List<Account> optionalAccount =
-                accountRepository.findAccountsByUsername( accountRegisterDto.getUsername());
-        if (optionalAccount.size() > 0) {
-            throw new Exception("Account exist");
+    public AccountRegisterDto register(AccountRegisterDto accoutRegisterDto) {
+        Optional<Account> optionalAccount =
+                accountRepository.findAccountByUsername(accoutRegisterDto.getUsername());
+        if (optionalAccount.isPresent()) {
+            return null;
         }
-
-
         Account account = Account.builder()
-                .username((accountRegisterDto.getUsername()))
-                .passwordHash(passwordEncoder.encode(accountRegisterDto.getPassword()))
-                .email(accountRegisterDto.getEmail())
-                .role(1)
+                .username((accoutRegisterDto.getUsername()))
+                .passwordHash(passwordEncoder.encode( accoutRegisterDto.getPassword()))
+                .email(accoutRegisterDto.getEmail())
+                .role(accoutRegisterDto.getRole())
                 .build();
-        return accountRepository.save(account);
+        accountRepository.save(account);
+        accoutRegisterDto.setId(account.getId());
+        return  accoutRegisterDto;
+
 
     }
 

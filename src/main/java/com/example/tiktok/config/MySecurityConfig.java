@@ -3,6 +3,7 @@ package com.example.tiktok.config;
 import com.example.tiktok.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     final AccountService accountService;
     final PasswordEncoder passwordEncoder;
-
+    @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManagerBean();
