@@ -75,5 +75,14 @@ public class AccountRestApi {
         Optional<Account> account  = accountRepository.findById(Long.parseLong(principal.toString()));
         return ResponseEntity.ok(account.get());
     }
+    @DeleteMapping( "{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        if (!accountService.findById(id).isPresent()) {
+            ResponseEntity.badRequest().build();
+        }
+        accountService.deletedById(id);
+        return ResponseEntity.ok().build();
+    }
+
 
 }

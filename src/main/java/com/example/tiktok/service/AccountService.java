@@ -100,5 +100,8 @@ public class AccountService implements UserDetailsService {
     public Account save(Account account) {
         return accountRepository.save(account);
     }
+    public void deletedById(Long id) {
+        accountRepository.deleteById(id);
+    }
 
 }
