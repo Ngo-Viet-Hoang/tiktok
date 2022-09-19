@@ -8,7 +8,9 @@ import com.example.tiktok.entity.Account;
 import java.util.Date;
 
 public class JwtUtil {
+    // lớp này dùng để ký (là hoạt động mã hóa tạo ra chữ ký) và xác nhận (verify) token
     public static Algorithm algorithm;
+// giữ phương thức xác minh đúng định dạng  JWT và đúng chữ ký
     private static JWTVerifier verifier;
     public static String JWT_SECRET_KEY = "secret-changed";
     public static final int ONE_SECOND = 1000;

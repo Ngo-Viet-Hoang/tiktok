@@ -31,6 +31,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.authorizeRequests().antMatchers("/api/v1/accounts/*").permitAll();
         http.authorizeRequests().antMatchers("/api/v1/posts/*").hasAnyAuthority("USER","ADMIN");
+        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 
         http.addFilterBefore(
                 new MyAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

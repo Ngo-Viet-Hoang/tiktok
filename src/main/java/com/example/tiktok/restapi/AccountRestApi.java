@@ -51,8 +51,7 @@ public class AccountRestApi {
     }
     @RequestMapping(method = RequestMethod.PUT,path = "{id}")
     public ResponseEntity<?> update( @RequestBody AccountRegisterDto accountRegisterDto){
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Optional<Account> account  = accountRepository.findById(Long.parseLong(principal.toString()));
+//
         Optional<Account> account = accountService.findById(accountRegisterDto.getId());
         if (!account.isPresent()) {
             ResponseEntity.badRequest().build();

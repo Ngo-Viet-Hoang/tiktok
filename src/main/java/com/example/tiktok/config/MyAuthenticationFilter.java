@@ -57,6 +57,7 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         Gson gson = new Gson();
         response.getWriter().println(gson.toJson(credential));
+        System.out.println("SUccesc login");
     }
 
     @Override

@@ -38,6 +38,9 @@ public class PostService {
         if(null == postDto.getTitle() || postDto.getTitle().equals("")){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Title is not null");
         }
+        if(null == postDto.getVideo() || postDto.getVideo().equals("")){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Video is not null");
+        }
         Post post = new  Post(postDto);
         return postRepository.save(post);
     }
@@ -50,6 +53,7 @@ public class PostService {
         exitPost.setId(post.getId());
         exitPost.setImage(post.getImage());
         exitPost.setTitle(post.getTitle());
+        exitPost.setVideo(post.getVideo());
         exitPost.setContent(post.getContent());
         exitPost.setUpdatedAt(LocalDateTime.now());
         return  postRepository.save(exitPost);

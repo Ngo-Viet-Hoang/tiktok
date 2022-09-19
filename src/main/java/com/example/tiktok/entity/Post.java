@@ -21,6 +21,7 @@ public class Post extends BaseEntity {
     private Long id;
     private String image;
     private String title;
+    private String video;
     private String content;
 
     public Post(PostDto postDto){
