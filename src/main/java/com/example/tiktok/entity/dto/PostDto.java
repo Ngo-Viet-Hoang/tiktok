@@ -15,7 +15,7 @@ public class PostDto {
     private Long id;
     private String image;
     private String title;
-    private String video;
+//    private String video;
     private String content;
 
     public PostDto(Post post){
