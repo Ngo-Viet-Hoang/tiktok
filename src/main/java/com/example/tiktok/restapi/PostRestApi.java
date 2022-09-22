@@ -4,6 +4,9 @@ import com.example.tiktok.entity.Post;
 import com.example.tiktok.entity.dto.PostDto;
 import com.example.tiktok.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,7 +62,17 @@ public class PostRestApi {
         return ResponseEntity.ok().build();
     }
     @GetMapping
-    public ResponseEntity<?>  getList(){
-        return ResponseEntity.ok(postService.findAll());
+//    public ResponseEntity<?>  getList(){
+//        return ResponseEntity.ok(postService.findAll());
+//    }
+    public ResponseEntity<?> getList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "limit",defaultValue = "10") int limit){
+        try {
+            Pageable pageable = PageRequest.of(page -1, limit, Sort.by("createdAt").descending());
+            return ResponseEntity.ok(postService.findAll(pageable).map(PostDto::new));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Errors");
+        }
     }
 }

@@ -1,15 +1,15 @@
 package com.example.tiktok.service;
-
 import com.example.tiktok.entity.Post;
 import com.example.tiktok.entity.dto.PostDto;
 import com.example.tiktok.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,8 +19,11 @@ public class PostService {
     public Post save(Post post){
         return postRepository.save(post);
     }
-    public List<Post> findAll(){
-        return postRepository.findAll();
+//    public List<Post> findAll(){
+//        return postRepository.findAll();
+//    }
+    public Page<Post> findAll(Pageable pageable){
+        return postRepository.findAll(pageable);
     }
     public Optional<Post> findById(Long id){
         return postRepository.findById(id);

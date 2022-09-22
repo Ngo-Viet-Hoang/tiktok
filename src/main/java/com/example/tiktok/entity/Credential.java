@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,5 +17,7 @@ public class Credential {
     private String refreshToken;
     private long expiredAt;
     private String scope;
+//    private Long accountId;
+//    private String accountUsername;
 
 }

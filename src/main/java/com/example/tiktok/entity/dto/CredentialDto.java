@@ -1,5 +1,6 @@
 package com.example.tiktok.entity.dto;
 
+import com.example.tiktok.entity.Account;
 import lombok.*;
 
 @Getter
@@ -12,4 +13,6 @@ public class CredentialDto {
     private String refreshToken;
     private long expiredAt;
     private String scope;
+//    private Long accountId;
+//    private String  accountUsername;
 }
