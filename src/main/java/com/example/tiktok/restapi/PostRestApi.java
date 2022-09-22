@@ -62,17 +62,18 @@ public class PostRestApi {
         return ResponseEntity.ok().build();
     }
     @GetMapping
-//    public ResponseEntity<?>  getList(){
-//        return ResponseEntity.ok(postService.findAll());
-//    }
-    public ResponseEntity<?> getList(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "limit",defaultValue = "10") int limit){
-        try {
-            Pageable pageable = PageRequest.of(page -1, limit, Sort.by("createdAt").descending());
-            return ResponseEntity.ok(postService.findAll(pageable).map(PostDto::new));
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body("Errors");
-        }
+    public ResponseEntity<?>  getList(){
+
+        return ResponseEntity.ok(postService.findAll());
     }
+//    public ResponseEntity<?> getList(
+//            @RequestParam(value = "page", defaultValue = "1") int page,
+//            @RequestParam(value = "limit",defaultValue = "10") int limit){
+//        try {
+//            Pageable pageable = PageRequest.of(page -1, limit, Sort.by("createdAt").descending());
+//            return ResponseEntity.ok(postService.findAll(pageable).map(PostDto::new));
+//        }catch (Exception e){
+//            return ResponseEntity.badRequest().body("Errors");
+//        }
+//    }
 }
