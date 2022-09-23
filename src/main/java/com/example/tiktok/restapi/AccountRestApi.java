@@ -49,7 +49,7 @@ public class AccountRestApi {
     public ResponseEntity<List<Account>> getList(){
         return ResponseEntity.ok(accountService.findAll());
     }
-    @RequestMapping(method = RequestMethod.PUT,path = "{id}")
+    @PutMapping
     public ResponseEntity<?> update( @RequestBody AccountRegisterDto accountRegisterDto){
 //
         Optional<Account> account = accountService.findById(accountRegisterDto.getId());
