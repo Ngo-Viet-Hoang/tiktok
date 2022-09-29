@@ -1,7 +1,10 @@
 package com.example.tiktok.entity;
 
 import com.example.tiktok.entity.basic.BaseEntity;
+import com.example.tiktok.entity.dto.AccountRegisterDto;
+import com.example.tiktok.util.Enums;
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 
@@ -20,7 +23,12 @@ public class Account extends BaseEntity {
     private String username;
     private String passwordHash;
     private String email;
-    private int role;
+    @Enumerated(EnumType.STRING)
+    private Enums.AccountStatus status;
+
+    public Account(AccountRegisterDto accountRegisterDto){
+        BeanUtils.copyProperties(accountRegisterDto,this);
+    }
 
 
 

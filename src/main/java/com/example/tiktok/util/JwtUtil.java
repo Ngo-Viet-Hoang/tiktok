@@ -4,6 +4,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.tiktok.entity.Account;
+import org.springframework.security.core.Authentication;
 
 import java.util.Date;
 
@@ -57,9 +58,10 @@ public class JwtUtil {
     public static String generateTokenByAccount(Account account, int expireAfter) {
         return JWT.create()
                 .withSubject(String.valueOf(account.getId()))
+                .withSubject(String.valueOf(account.getUsername()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + expireAfter))
                 .withIssuer(DEFAULT_ISSUER)
-                .withClaim(JwtUtil.ROLE_CLAIM_KEY, account.getRole() == 1 ? "ADMIN" : "USER" )
+                .withClaim(JwtUtil.ROLE_CLAIM_KEY, account.getStatus() == Enums.AccountStatus.ADMIN ? "ADMIN" : "USER" )
                 .withClaim("username", account.getUsername())
                 .sign(getAlgorithm());
     }

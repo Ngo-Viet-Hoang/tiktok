@@ -5,6 +5,7 @@ import com.example.tiktok.entity.Credential;
 import com.example.tiktok.entity.dto.AccountLoginDto;
 import com.example.tiktok.entity.dto.AccountRegisterDto;
 import com.example.tiktok.repository.AccountRepository;
+import com.example.tiktok.util.Enums;
 import com.example.tiktok.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,21 +31,22 @@ public class AccountService implements UserDetailsService {
     final AccountRepository accountRepository;
     final PasswordEncoder passwordEncoder;
 
-    public AccountRegisterDto register(AccountRegisterDto accoutRegisterDto) {
+    public AccountRegisterDto register(AccountRegisterDto accountRegisterDto) {
         Optional<Account> optionalAccount =
-                accountRepository.findAccountByUsername(accoutRegisterDto.getUsername());
+                accountRepository.findAccountByUsername(accountRegisterDto.getUsername());
         if (optionalAccount.isPresent()) {
             return null;
         }
         Account account = Account.builder()
-                .username((accoutRegisterDto.getUsername()))
-                .passwordHash(passwordEncoder.encode( accoutRegisterDto.getPassword()))
-                .email(accoutRegisterDto.getEmail())
-                .role(2)
+                .username((accountRegisterDto.getUsername()))
+                .passwordHash(passwordEncoder.encode( accountRegisterDto.getPassword()))
+                .email(accountRegisterDto.getEmail())
+                .status(Enums.AccountStatus.USER)
                 .build();
         accountRepository.save(account);
-        accoutRegisterDto.setId(account.getId());
-        return  accoutRegisterDto;
+        accountRegisterDto.setId(account.getId());
+        accountRegisterDto.setStatus(account.getStatus());
+        return  accountRegisterDto;
 
 
     }
@@ -68,6 +70,8 @@ public class AccountService implements UserDetailsService {
             credential.setRefreshToken(refreshToken);
             credential.setExpiredAt(expiredAfterDay);
             credential.setScope("basic_information");
+            credential.setAccountId(account.getId());
+            credential.setAccountUsername(account.getUsername());
             return credential;
         } else {
             throw new UsernameNotFoundException("Password is not match");
@@ -89,7 +93,7 @@ public class AccountService implements UserDetailsService {
         Account account = optionalAccount.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         SimpleGrantedAuthority simpleGrantedAuthority =
-                new SimpleGrantedAuthority(account.getRole() == 1 ? "ADMIN" : "USER");
+                new SimpleGrantedAuthority(account.getStatus() == Enums.AccountStatus.ADMIN ? "ADMIN" : "USER");
         authorities.add(simpleGrantedAuthority);
         return new User(account.getUsername(), account.getPasswordHash(), authorities);
     }

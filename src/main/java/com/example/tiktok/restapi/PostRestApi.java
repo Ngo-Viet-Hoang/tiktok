@@ -1,13 +1,17 @@
 package com.example.tiktok.restapi;
 
+import com.example.tiktok.entity.Account;
 import com.example.tiktok.entity.Post;
 import com.example.tiktok.entity.dto.PostDto;
+import com.example.tiktok.repository.AccountRepository;
 import com.example.tiktok.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -18,25 +22,45 @@ import java.util.Optional;
 @RequestMapping("api/v1/posts")
 public class PostRestApi {
     final PostService postService;
+
+
+    @Autowired
+    AccountRepository accountRepository;
+
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody PostDto post) {
+    public ResponseEntity<?> create(@RequestBody PostDto post, Authentication principal) {
         try {
-            return ResponseEntity.ok(postService.create(post));
+
+            System.out.printf("aaa: " + principal.getName());
+            String adminId = principal.getName();
+
+            Optional<Account> op = accountRepository.findAccountByUsername(adminId);
+
+
+            if (!op.isPresent()){
+
+            }
+                Account account = op.get();
+
+            return ResponseEntity.ok(postService.create(post,account.getId()));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body("Action fails.");
         }
     }
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody PostDto post) {
+    public ResponseEntity<?> update(@RequestBody PostDto post, Authentication principal) {
         try {
+            String adminId = principal.getName();
 
-            Optional<Post> optionalPost = postService.findById(post.getId());
-            if (!optionalPost.isPresent()) {
-                return ResponseEntity.badRequest().body("Post not found");
+            Optional<Account> op = accountRepository.findAccountByUsername(adminId);
+
+
+            if (!op.isPresent()){
+
             }
-            Post existPost = optionalPost.get();
-            postService.update(post);
-            return ResponseEntity.ok( new PostDto(existPost));
+            Account account = op.get();
+            return ResponseEntity.ok(postService.update(post,account.getId()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Action fails.");
         }

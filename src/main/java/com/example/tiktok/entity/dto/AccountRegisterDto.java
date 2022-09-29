@@ -1,6 +1,9 @@
 package com.example.tiktok.entity.dto;
 
+import com.example.tiktok.entity.Account;
+import com.example.tiktok.util.Enums;
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.Email;
 
@@ -13,7 +16,10 @@ public class AccountRegisterDto {
     private Long id;
     private String username;
     private String password;
-    @Email(message = "invalid email address")
     private String email;
-    private int role;
+    private Enums.AccountStatus status;
+
+    public AccountRegisterDto(Account account){
+        BeanUtils.copyProperties(account,this);
+    }
 }

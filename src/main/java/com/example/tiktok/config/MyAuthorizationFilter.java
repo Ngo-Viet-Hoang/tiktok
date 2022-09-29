@@ -23,25 +23,8 @@ import java.util.Collection;
 
 @Slf4j
 public class MyAuthorizationFilter extends OncePerRequestFilter {
-    private static final String[] IGNORE_PATHS = {"/api/v1/login", "/api/v1/register", "/api/v1/foods"};
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String requestPath = request.getServletPath();
-
-
-        System.out.println("requestPath: " + requestPath);
-        if (Arrays.asList(IGNORE_PATHS).contains(requestPath)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        if (requestPath.equals("/api/v1/accounts/login")){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -52,6 +35,7 @@ public class MyAuthorizationFilter extends OncePerRequestFilter {
             DecodedJWT decodedJWT = JwtUtil.getDecodedJwt(token);
             String username = decodedJWT.getSubject();
             String role = decodedJWT.getClaim(JwtUtil.ROLE_CLAIM_KEY).asString();
+            log.info(String.format("_%s_%s_", username, role));
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(role));
             UsernamePasswordAuthenticationToken authenticationToken =
@@ -60,9 +44,8 @@ public class MyAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token invalid");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Token");
         }
     }
-
     }
 

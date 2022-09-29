@@ -13,6 +13,6 @@ public class CredentialDto {
     private String refreshToken;
     private long expiredAt;
     private String scope;
-//    private Long accountId;
-//    private String  accountUsername;
+    private Long accountId;
+    private String  accountUsername;
 }

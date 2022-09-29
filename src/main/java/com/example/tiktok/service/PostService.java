@@ -23,16 +23,13 @@ public class PostService {
     public List<Post> findAll(){
         return postRepository.findAll();
     }
-//    public Page<Post> findAll(Pageable pageable){
-//        return postRepository.findAll(pageable);
-//    }
     public Optional<Post> findById(Long id){
         return postRepository.findById(id);
     }
     public void deletedById(Long id) {
         postRepository.deleteById(id);
     }
-    public Post create(PostDto postDto){
+    public Post create(PostDto postDto, Long adminId){
         if(null == postDto.getImage() || postDto.getImage().equals("")){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Image is not null");
         }
@@ -46,9 +43,12 @@ public class PostService {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Video is not null");
 //        }
         Post post = new  Post(postDto);
+
+        post.setCreateBy(adminId);
+        post.setCreatedAt(LocalDateTime.now());
         return postRepository.save(post);
     }
-    public Post update(PostDto post){
+    public Post update(PostDto post, Long adminId){
         Optional<Post> optionalPost = postRepository.findById(post.getId());
         if(!optionalPost.isPresent()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Post is not found");
@@ -60,6 +60,7 @@ public class PostService {
 //        exitPost.setVideo(post.getVideo());
         exitPost.setContent(post.getContent());
         exitPost.setUpdatedAt(LocalDateTime.now());
+        exitPost.setUpdatedBy(adminId);
         return  postRepository.save(exitPost);
      }
 }
