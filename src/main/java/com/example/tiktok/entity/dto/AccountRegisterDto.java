@@ -12,6 +12,7 @@ import javax.validation.constraints.Email;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class AccountRegisterDto {
     private Long id;
     private String username;
