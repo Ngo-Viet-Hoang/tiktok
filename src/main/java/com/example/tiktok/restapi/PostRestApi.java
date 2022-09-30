@@ -2,6 +2,7 @@ package com.example.tiktok.restapi;
 
 import com.example.tiktok.entity.Account;
 import com.example.tiktok.entity.Post;
+import com.example.tiktok.entity.Respondata;
 import com.example.tiktok.entity.dto.PostDto;
 import com.example.tiktok.repository.AccountRepository;
 import com.example.tiktok.service.PostService;
@@ -42,7 +43,7 @@ public class PostRestApi {
             }
                 Account account = op.get();
 
-            return ResponseEntity.ok(postService.create(post,account.getId()));
+            return ResponseEntity.ok(new Respondata(postService.create(post,account.getId()),adminId));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("Action fails.");
@@ -60,7 +61,7 @@ public class PostRestApi {
 
             }
             Account account = op.get();
-            return ResponseEntity.ok(postService.update(post,account.getId()));
+            return ResponseEntity.ok(new Respondata(postService.update(post,account.getId()),adminId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Action fails.");
         }
