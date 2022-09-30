@@ -22,11 +22,6 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     final AccountService accountService;
     final PasswordEncoder passwordEncoder;
 
-    private static final String[] IGNORE_PATHS = {
-            "/api/v1/accounts/*"
-    };
-    private static final String[] USER_PATHS = {"/api/v1/posts/**"};
-
     @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -35,19 +30,14 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable();
-        http.cors()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable();
-        http.authorizeRequests()
-                .antMatchers(IGNORE_PATHS).permitAll()
-                .antMatchers(USER_PATHS).hasAnyAuthority(Enums.AccountStatus.USER.name(), Enums.AccountStatus.ADMIN.name());
+        MyAuthenticationFilter authenticationFilter = new MyAuthenticationFilter(authenticationManagerBean());
+        authenticationFilter.setFilterProcessesUrl("/api/v1/accounts/login");
+        http.cors().and().csrf().disable();
+        http.authorizeRequests().antMatchers("/api/v1/accounts/*").permitAll();
+        http.authorizeRequests().antMatchers("/api/v1/posts/**").hasAnyAuthority("USER", "ADMIN");
         http.addFilterBefore(
                 new MyAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
 }
 
 //        MyAuthenticationFilter authenticationFilter = new MyAuthenticationFilter(authenticationManagerBean());
