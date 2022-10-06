@@ -61,7 +61,7 @@ public class PostRestApi {
 
             }
             Account account = op.get();
-            return ResponseEntity.ok(new Respondata(postService.update(post,account.getId()),adminId));
+            return ResponseEntity.ok(postService.update(post,account.getId(),adminId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Action fails 2342.");
         }

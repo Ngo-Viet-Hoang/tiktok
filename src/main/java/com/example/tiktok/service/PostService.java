@@ -44,7 +44,7 @@ public class PostService {
         post.setUsername(username);
         return postRepository.save(post);
     }
-    public Post update(PostDto post, Long adminId){
+    public Post update(PostDto post, Long adminId, String username){
         Optional<Post> optionalPost = postRepository.findById(post.getId());
         if(!optionalPost.isPresent()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Post is not found");
@@ -56,6 +56,7 @@ public class PostService {
         exitPost.setContent(post.getContent());
         exitPost.setUpdatedAt(LocalDateTime.now());
         exitPost.setUpdatedBy(adminId);
+        exitPost.setUsername(username);
         return  postRepository.save(exitPost);
      }
 }
