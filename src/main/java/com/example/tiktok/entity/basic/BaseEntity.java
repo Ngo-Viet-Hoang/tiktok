@@ -18,4 +18,5 @@ public class BaseEntity {
     private Long createBy;
     private Long updatedBy;
     private Long deletedBy;
+    private String username;
 }

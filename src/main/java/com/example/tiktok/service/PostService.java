@@ -3,8 +3,6 @@ import com.example.tiktok.entity.Post;
 import com.example.tiktok.entity.dto.PostDto;
 import com.example.tiktok.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,7 +27,7 @@ public class PostService {
     public void deletedById(Long id) {
         postRepository.deleteById(id);
     }
-    public Post create(PostDto postDto, Long adminId){
+    public Post create(PostDto postDto, Long adminId, String username){
         if(null == postDto.getImage() || postDto.getImage().equals("")){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Image is not null");
         }
@@ -39,13 +37,11 @@ public class PostService {
         if(null == postDto.getTitle() || postDto.getTitle().equals("")){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Title is not null");
         }
-//        if(null == postDto.getVideo() || postDto.getVideo().equals("")){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Video is not null");
-//        }
         Post post = new  Post(postDto);
 
         post.setCreateBy(adminId);
         post.setCreatedAt(LocalDateTime.now());
+        post.setUsername(username);
         return postRepository.save(post);
     }
     public Post update(PostDto post, Long adminId){
@@ -57,7 +53,6 @@ public class PostService {
         exitPost.setId(post.getId());
         exitPost.setImage(post.getImage());
         exitPost.setTitle(post.getTitle());
-//        exitPost.setVideo(post.getVideo());
         exitPost.setContent(post.getContent());
         exitPost.setUpdatedAt(LocalDateTime.now());
         exitPost.setUpdatedBy(adminId);

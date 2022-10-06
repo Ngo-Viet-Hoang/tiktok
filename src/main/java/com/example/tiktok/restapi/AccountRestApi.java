@@ -7,6 +7,10 @@ import com.example.tiktok.repository.AccountRepository;
 import com.example.tiktok.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,10 +37,10 @@ public class AccountRestApi {
     public ResponseEntity<?> login(@RequestBody AccountLoginDto accountLoginDto){
         return ResponseEntity.ok(accountService.login(accountLoginDto));
     }
-    @RequestMapping(method = RequestMethod.GET)
-    public String getInformation(){
-        return "";
-    }
+//    @RequestMapping(method = RequestMethod.GET)
+//    public String getInformation(){
+//        return "";
+//    }
     @RequestMapping(path = "{id}",method = RequestMethod.GET)
     public ResponseEntity<?> getDetail(@PathVariable Long id) {
         Optional<Account> optionalAccount = accountService.findById(id);
@@ -82,6 +86,10 @@ public class AccountRestApi {
         }
         accountService.deletedById(id);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping(path = "/search")
+    public ResponseEntity<List<Account>> getSearch(String username){
+        return ResponseEntity.ok(accountService.findAllByUsername(username));
     }
 
 

@@ -106,4 +106,7 @@ public class AccountService implements UserDetailsService {
         accountRepository.deleteById(id);
     }
 
+    public List<Account> findAllByUsername(String username){
+        return accountRepository.findAllByUsername(username);
+    }
 }

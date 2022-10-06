@@ -43,7 +43,7 @@ public class PostRestApi {
             }
                 Account account = op.get();
 
-            return ResponseEntity.ok(new Respondata(postService.create(post,account.getId()),adminId));
+            return ResponseEntity.ok(postService.create(post, account.getId(), adminId));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("Action fails.");
@@ -63,7 +63,7 @@ public class PostRestApi {
             Account account = op.get();
             return ResponseEntity.ok(new Respondata(postService.update(post,account.getId()),adminId));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Action fails.");
+            return ResponseEntity.badRequest().body("Action fails 2342.");
         }
     }
     @GetMapping("{id}")
