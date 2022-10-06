@@ -28,6 +28,8 @@ public class JwtUtil {
         return algorithm;
     }
 
+    static int time =  ONE_DAY * 3;
+
     public static JWTVerifier getVerifier() {
         if(verifier == null) {
             verifier = JWT.require(getAlgorithm()).build();
@@ -49,7 +51,7 @@ public class JwtUtil {
         }
         return JWT.create()
                 .withSubject(subject)
-                .withExpiresAt(new Date(System.currentTimeMillis() + expireAfter))
+                .withExpiresAt(new Date(System.currentTimeMillis() + time))
                 .withIssuer(issuer)
                 .withClaim(JwtUtil.ROLE_CLAIM_KEY, role) //get first role in Authorities
                 .sign(getAlgorithm());
@@ -59,7 +61,7 @@ public class JwtUtil {
         return JWT.create()
                 .withSubject(String.valueOf(account.getId()))
                 .withSubject(String.valueOf(account.getUsername()))
-                .withExpiresAt(new Date(System.currentTimeMillis() + expireAfter))
+                .withExpiresAt(new Date(System.currentTimeMillis() + time))
                 .withIssuer(DEFAULT_ISSUER)
                 .withClaim(JwtUtil.ROLE_CLAIM_KEY, account.getStatus() == Enums.AccountStatus.ADMIN ? "ADMIN" : "USER" )
                 .withClaim("username", account.getUsername())
