@@ -63,6 +63,7 @@ public class AccountRestApi {
             existAccount.setEmail(accountRegisterDto.getEmail());
         if (accountRegisterDto.getPassword() != null)
             existAccount.setPasswordHash(passwordEncoder.encode(accountRegisterDto.getPassword()));
+        existAccount.setRole(accountRegisterDto.getRole());
         existAccount.setStatus(accountRegisterDto.getStatus());
 
         accountService.save(existAccount);
