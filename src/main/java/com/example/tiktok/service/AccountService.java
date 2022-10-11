@@ -84,9 +84,6 @@ public class AccountService implements UserDetailsService {
 
     }
 
-    public void getInformation() {
-
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
