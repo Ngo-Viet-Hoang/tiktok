@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Getter
 @Setter
@@ -24,7 +25,9 @@ public class Account extends BaseEntity {
     private String passwordHash;
     private String email;
     @Enumerated(EnumType.STRING)
-    private Enums.AccountStatus status;
+    private Enums.AccountSRole role;
+    @Enumerated(EnumType.STRING)
+    private Enums.AccountStatus status = Enums.AccountStatus.active;
 
     public Account(AccountRegisterDto accountRegisterDto){
         BeanUtils.copyProperties(accountRegisterDto,this);

@@ -17,8 +17,10 @@ public class AccountRegisterDto {
     private Long id;
     private String username;
     private String password;
+    @Email
     private String email;
-    private Enums.AccountStatus status;
+    private Enums.AccountSRole role = Enums.AccountSRole.USER;
+    private Enums.AccountStatus status = Enums.AccountStatus.active;
 
     public AccountRegisterDto(Account account){
         BeanUtils.copyProperties(account,this);

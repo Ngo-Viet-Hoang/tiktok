@@ -8,6 +8,9 @@ import com.example.tiktok.repository.AccountRepository;
 import com.example.tiktok.util.Enums;
 import com.example.tiktok.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +33,22 @@ public class AccountService implements UserDetailsService {
 
     public Account register(AccountRegisterDto accountRegisterDto) {
         Optional<Account> optionalAccount =
-                accountRepository.findAccountByUsername(accountRegisterDto.getUsername());
+                accountRepository.findAccountsByEmail(accountRegisterDto.getEmail());
         if (optionalAccount.isPresent()) {
-            return null;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Email is exitst");
         }
-
+        if(accountRegisterDto.getUsername() == null || accountRegisterDto.getUsername().equals("")){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name is not null");
+        }
+        if(accountRegisterDto.getPassword() == null || accountRegisterDto.getUsername().equals("")){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is not null");
+        }
         Account account = Account.builder()
                 .username((accountRegisterDto.getUsername()))
                 .passwordHash(passwordEncoder.encode( accountRegisterDto.getPassword()))
                 .email(accountRegisterDto.getEmail())
-                .status(Enums.AccountStatus.USER)
+                .role(Enums.AccountSRole.USER)
+                .status(Enums.AccountStatus.active)
                 .build();
          return accountRepository.save(account);
 
@@ -47,9 +57,9 @@ public class AccountService implements UserDetailsService {
 
     public Credential login(AccountLoginDto accountLoginDto) {
         Optional<Account> optionalAccount
-                = accountRepository.findAccountByUsername(accountLoginDto.getUsername());
+                = accountRepository.findAccountsByEmail(accountLoginDto.getEmail());
         if (!optionalAccount.isPresent()) {
-            throw new UsernameNotFoundException("User is not found");
+            throw new UsernameNotFoundException("Email is not found");
         }
         Account account = optionalAccount.get();
         boolean isMatch = passwordEncoder.matches(accountLoginDto.getPassword(), account.getPasswordHash());
@@ -87,7 +97,7 @@ public class AccountService implements UserDetailsService {
         Account account = optionalAccount.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         SimpleGrantedAuthority simpleGrantedAuthority =
-                new SimpleGrantedAuthority(account.getStatus() == Enums.AccountStatus.ADMIN ? "ADMIN" : "USER");
+                new SimpleGrantedAuthority(account.getRole() == Enums.AccountSRole.ADMIN ? "ADMIN" : "USER");
         authorities.add(simpleGrantedAuthority);
         return new User(account.getUsername(), account.getPasswordHash(), authorities);
     }
@@ -108,5 +118,8 @@ public class AccountService implements UserDetailsService {
 
     public List<Account> findAllByUsername(String username){
         return accountRepository.findAllByUsername(username);
+    }
+    public Page<Account> search(String keyword,  Pageable pageable) {
+        return accountRepository.filter(keyword, pageable);
     }
 }

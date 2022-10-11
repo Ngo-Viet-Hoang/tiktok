@@ -63,7 +63,7 @@ public class JwtUtil {
                 .withSubject(String.valueOf(account.getUsername()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + time))
                 .withIssuer(DEFAULT_ISSUER)
-                .withClaim(JwtUtil.ROLE_CLAIM_KEY, account.getStatus() == Enums.AccountStatus.ADMIN ? "ADMIN" : "USER" )
+                .withClaim(JwtUtil.ROLE_CLAIM_KEY, account.getRole() == Enums.AccountSRole.ADMIN ? "ADMIN" : "USER" )
                 .withClaim("username", account.getUsername())
                 .sign(getAlgorithm());
     }

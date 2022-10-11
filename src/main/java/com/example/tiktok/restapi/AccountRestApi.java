@@ -37,10 +37,6 @@ public class AccountRestApi {
     public ResponseEntity<?> login(@RequestBody AccountLoginDto accountLoginDto){
         return ResponseEntity.ok(accountService.login(accountLoginDto));
     }
-//    @RequestMapping(method = RequestMethod.GET)
-//    public String getInformation(){
-//        return "";
-//    }
     @RequestMapping(path = "{id}",method = RequestMethod.GET)
     public ResponseEntity<?> getDetail(@PathVariable Long id) {
         Optional<Account> optionalAccount = accountService.findById(id);
@@ -91,6 +87,8 @@ public class AccountRestApi {
     public ResponseEntity<List<Account>> getSearch(String username){
         return ResponseEntity.ok(accountService.findAllByUsername(username));
     }
-
-
+    @GetMapping("/find/all/{keyword}")
+    public Page<Account> getFindes(@PathVariable String keyword) {
+        return accountService.search(keyword, Pageable.ofSize(10));
+    }
 }
