@@ -26,9 +26,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountRestApi {
     final AccountService accountService;
-
     final AccountRepository accountRepository;
     final PasswordEncoder passwordEncoder;
+
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody @Valid AccountRegisterDto accountRegisterDto) throws Exception {
         return ResponseEntity.ok(accountService.register(accountRegisterDto));
@@ -51,7 +51,6 @@ public class AccountRestApi {
     }
     @PutMapping
     public ResponseEntity<?> update( @RequestBody AccountRegisterDto accountRegisterDto){
-//
         Optional<Account> account = accountService.findById(accountRegisterDto.getId());
         if (!account.isPresent()) {
             ResponseEntity.badRequest().build();
@@ -65,7 +64,7 @@ public class AccountRestApi {
             existAccount.setPasswordHash(passwordEncoder.encode(accountRegisterDto.getPassword()));
         existAccount.setRole(accountRegisterDto.getRole());
         existAccount.setStatus(accountRegisterDto.getStatus());
-
+        existAccount.setImage(accountRegisterDto.getImage());
         accountService.save(existAccount);
         return ResponseEntity.ok(existAccount);
 

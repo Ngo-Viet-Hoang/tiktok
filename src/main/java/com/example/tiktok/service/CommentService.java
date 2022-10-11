@@ -33,9 +33,6 @@ public class CommentService {
 
 
     public Comment create(CommentDto commentDto){
-//        if(null == commentDto.getComment() || commentDto.getComment().equals("")){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Comment is not null");
-//        }
      Comment comment = new Comment(commentDto);
      return commentRepository.save(comment);
     }

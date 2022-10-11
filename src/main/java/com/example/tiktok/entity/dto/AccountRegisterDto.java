@@ -19,6 +19,7 @@ public class AccountRegisterDto {
     private String password;
     @Email(message = "Please enter the correct email form")
     private String email;
+    private String image;
     private Enums.AccountSRole role = Enums.AccountSRole.USER;
     private Enums.AccountStatus status = Enums.AccountStatus.active;
 

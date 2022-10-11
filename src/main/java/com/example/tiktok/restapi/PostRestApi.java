@@ -23,26 +23,19 @@ import java.util.Optional;
 @RequestMapping("api/v1/posts")
 public class PostRestApi {
     final PostService postService;
-
-
     @Autowired
     AccountRepository accountRepository;
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody PostDto post, Authentication principal) {
         try {
-
             System.out.printf("aaa: " + principal.getName());
             String adminId = principal.getName();
-
             Optional<Account> op = accountRepository.findAccountByUsername(adminId);
-
-
             if (!op.isPresent()){
 
             }
                 Account account = op.get();
-
             return ResponseEntity.ok(postService.create(post, account.getId(), adminId));
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,10 +46,7 @@ public class PostRestApi {
     public ResponseEntity<?> update(@RequestBody PostDto post, Authentication principal) {
         try {
             String adminId = principal.getName();
-
             Optional<Account> op = accountRepository.findAccountByUsername(adminId);
-
-
             if (!op.isPresent()){
 
             }

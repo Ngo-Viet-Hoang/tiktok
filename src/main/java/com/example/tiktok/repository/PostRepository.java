@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post,Long> {
-
  @Query("SELECT e FROM Post e ORDER BY e.createdAt DESC ")
  List<Post> findAll();
 }

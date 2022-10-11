@@ -24,10 +24,12 @@ public class Account extends BaseEntity {
     private String username;
     private String passwordHash;
     private String email;
+    private String image;
     @Enumerated(EnumType.STRING)
     private Enums.AccountSRole role;
     @Enumerated(EnumType.STRING)
     private Enums.AccountStatus status = Enums.AccountStatus.active;
+
 
     public Account(AccountRegisterDto accountRegisterDto){
         BeanUtils.copyProperties(accountRegisterDto,this);

@@ -49,10 +49,9 @@ public class AccountService implements UserDetailsService {
                 .email(accountRegisterDto.getEmail())
                 .role(Enums.AccountSRole.USER)
                 .status(Enums.AccountStatus.active)
+                .image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3xuxi8RgKNptS_3y2HI-YI7Q1nsQUKp9Z7NxD9CXvUalewey2Wm4QkXEt1PSk-8rMlzk&usqp=CAU")
                 .build();
          return accountRepository.save(account);
-
-
     }
 
     public Credential login(AccountLoginDto accountLoginDto) {
@@ -79,9 +78,7 @@ public class AccountService implements UserDetailsService {
             return credential;
         } else {
             throw new UsernameNotFoundException("Password is not match");
-
         }
-
     }
 
 
